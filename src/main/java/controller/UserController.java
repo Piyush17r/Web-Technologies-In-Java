@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import Dao.UserDao;
 import Model.User;
 import service.services;
@@ -142,10 +141,19 @@ public class UserController extends HttpServlet {
 					request.setAttribute("msg", "password not matched");
 					request.setAttribute("email", email);
 					request.getRequestDispatcher("user-verify-otp.jsp").forward(request, response);
-				}
+				} 
+			}else if (action.equalsIgnoreCase("Update Password")) {
+					String email = request.getParameter("email");
+					String np = request.getParameter("np");
+					String cnp = request.getParameter("cnp");
+					if (np.equals(cnp)) {
+						UserDao.ChangeNewPasswrod(email, cnp);
+						response.sendRedirect("login.jsp");
+					} else {
+						request.setAttribute("msg", "np and cnp not matched");
+						request.setAttribute("email", email);
+						request.getRequestDispatcher("user-verify-otp.jsp").forward(request, response);
 			}
 	}
 }
-	
-
-
+}
